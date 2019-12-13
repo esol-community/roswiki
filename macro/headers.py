@@ -414,9 +414,10 @@ def _render_testresults(macro, testresults):
             if len(testresult['urls']) == 1:
                 html += '<a href="' + testresult['urls'][0] +'" target="_blank">' + testresult['name'] + '</a> '
             else:
-                html += testresult['name'] + '[<a href="' + testresult['urls'][0] +'" target="_blank">1</a>'
+                html += testresult['name']
+                html += '[<a href="' + testresult['urls'][0] +'" target="_blank">' + os.path.basename(testresult['urls'][0]) + '</a>'
                 for i in range(1, len(testresult['urls'])):
-                    html += ',<a href="' + testresult['urls'][i] +'" target="_blank">'+str(i+1)+'</a>'
+                    html += ',<a href="' + testresult['urls'][i] +'" target="_blank">'+os.path.basename(testresult['urls'][i])+'</a>'
                 html += ']'
         html += "</li>"
     return html
