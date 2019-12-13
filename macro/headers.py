@@ -20,7 +20,7 @@ from macroutils import get_url_li
 from macroutils import get_vcs_li
 from macroutils import load_package_manifest
 from macroutils import load_repo_devel_job_data
-from macroutils import get_repo_reports_data
+from macroutils import get_repo_testresults_data
 from macroutils import load_stack_release
 from macroutils import msg_doc_link
 from macroutils import package_changelog_html_link
@@ -124,7 +124,7 @@ def get_description(macro, data, type_):
     except UnicodeDecodeError:
         description = ''
 
-    reports_html = get_reports(macro, data)
+    testresults_html = get_testresults(macro, data)
 
     f = macro.formatter
     p, li, ul = f.paragraph, f.listitem, f.bullet_list
@@ -159,7 +159,7 @@ def get_description(macro, data, type_):
             repo_li +
             bugtracker_li +
             vcs_li +
-            reports_html +
+            testresults_html +
             ul(0) + p(0)
         )
     except UnicodeDecodeError:
@@ -405,27 +405,27 @@ def get_badges(macro, data):
     html = _render_badges(macro, data, badges)
     return html
 
-def _render_reports(macro, reports):
+def _render_testresults(macro, testresults):
     # p = macro.formatter.paragraph
     html = ''
-    if reports and len(reports)>0:
-        html += "<li>" + "Available Software Reports: "
-        for report in reports:
-            if len(report['urls']) == 1:
-                html += '<a href="' + report['urls'][0] +'" target="_blank">' + report['name'] + '</a> '
+    if testresults and len(testresults)>0:
+        html += "<li>" + "Available Test Results: "
+        for testresult in testresults:
+            if len(testresult['urls']) == 1:
+                html += '<a href="' + testresult['urls'][0] +'" target="_blank">' + testresult['name'] + '</a> '
             else:
-                html += report['name'] + '[<a href="' + report['urls'][0] +'" target="_blank">1</a>'
-                for i in range(1, len(report['urls'])):
-                    html += ',<a href="' + report['urls'][i] +'" target="_blank">'+str(i+1)+'</a>'
+                html += testresult['name'] + '[<a href="' + testresult['urls'][0] +'" target="_blank">1</a>'
+                for i in range(1, len(testresult['urls'])):
+                    html += ',<a href="' + testresult['urls'][i] +'" target="_blank">'+str(i+1)+'</a>'
                 html += ']'
         html += "</li>"
     return html
 
 
-def get_reports(macro, data):
-    if not data.get('reports_data'):
+def get_testresults(macro, data):
+    if not data.get('testresults_data'):
         return ''
-    html = _render_reports(macro, data.get('reports_data'))
+    html = _render_testresults(macro, data.get('testresults_data'))
     return html
 
 
@@ -608,12 +608,12 @@ def generate_package_header(macro, package_name, opt_distro=None):
     except:
         pass
 
-    # try to load test result / report info
+    # try to load test result info
     # (but don't complain if none can be be found,
-    # as not all packages include test result reports)
+    # as not all packages include test results)
     try:
-        reports_data = get_repo_reports_data(repo_name, opt_distro)
-        data.update(reports_data)
+        testresults_data = get_repo_testresults_data(repo_name, opt_distro)
+        data.update(testresults_data)
     except:
         pass
 
