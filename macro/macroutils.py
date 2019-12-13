@@ -66,10 +66,10 @@ def repo_testresult_dir(repo_name, distro=None):
     """
     Generate filesystem path to test results/reports directory for repository
     """
+    testresults_dir = doc_path
     if distro:
-        return os.path.join(doc_path, distro, 'devel_jobs', repo_name, "test_results")
-    else:
-        return os.path.join(doc_path, 'devel_jobs', repo_name, "test_results")
+        testresults_dir = os.path.join(testresults_dir, distro)
+    return os.path.join(testresults_dir, 'devel_jobs', repo_name, 'test_results')
 
 def get_package_versions(package):
     distros = []
