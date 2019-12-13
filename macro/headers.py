@@ -408,7 +408,7 @@ def get_badges(macro, data):
 def _render_testresults(macro, testresults):
     # p = macro.formatter.paragraph
     html = ''
-    if testresults and len(testresults)>0:
+    if testresults:
         html += "<li>" + "Available Test Results: "
         for testresult in testresults:
             if len(testresult['urls']) == 1:
